@@ -3,10 +3,22 @@ using UnityEngine;
 
 public class RoomManager : MonoBehaviourPunCallbacks
 {
+    public static RoomManager Instance;
 
+    public GameObject connectToServer_Canva;
+    public GameObject selectTeam_Canva;
+    void Awake()
+    {
+        if (Instance != null && Instance != this)
+            Destroy(this.gameObject);
+        else
+            Instance = this;
+    }
     void Start()
     {
         PhotonNetwork.ConnectUsingSettings();
+        selectTeam_Canva.SetActive(false);
+        connectToServer_Canva.SetActive(true);
     }
 
     public override void OnConnectedToMaster()
@@ -20,7 +32,8 @@ public class RoomManager : MonoBehaviourPunCallbacks
     {
         base.OnJoinedLobby();
         Debug.Log("Join a Lobby");
-        PhotonNetwork.JoinOrCreateRoom("Test Room", null, null);
+        selectTeam_Canva.SetActive(true);
+        connectToServer_Canva.SetActive(false);
     }
 
     public override void OnJoinedRoom()
@@ -28,4 +41,10 @@ public class RoomManager : MonoBehaviourPunCallbacks
         base.OnJoinedRoom();
         Debug.Log("Join a Room");
     }
+
+    public void JoinRoom()
+    {
+        PhotonNetwork.JoinOrCreateRoom("GameRoom", null, null);
+    }
+
 }
