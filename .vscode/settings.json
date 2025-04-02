@@ -56,5 +56,5 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "WEB ES.sln"
+    "dotnet.defaultSolution": "WEB-SON.sln"
 }
