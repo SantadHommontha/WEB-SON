@@ -2,11 +2,17 @@ using UnityEngine;
 using Photon.Pun;
 public class TeamManager : MonoBehaviourPunCallbacks
 {
-
+    public static TeamManager instance;
     [SerializeField] private int maxTeamCount = 3;
     private Team team = new Team();
-    
 
+    void Awake()
+    {
+        if(instance != null && instance != this)
+            Destroy(this.gameObject);
+        else
+            instance = this;
+    }
     private void TryJoinTeam(string _teamName)
     {
 

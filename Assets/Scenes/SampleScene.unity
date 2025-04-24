@@ -887,8 +887,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a0e72f8444abc7147aac98000f9cb220, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nameInput: {fileID: 0}
-  codeInput: {fileID: 0}
+  nameInput: {fileID: 1674823101}
+  codeInput: {fileID: 1109800777}
+  report: {fileID: 775152062}
 --- !u!4 &482721704
 Transform:
   m_ObjectHideFlags: 0
@@ -1623,7 +1624,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1468080835}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 482721703}
+        m_TargetAssemblyTypeName: TeamJoinHandler, Assembly-CSharp
+        m_MethodName: FirstTeam
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1468080835
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2002,7 +2015,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1724510194}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 482721703}
+        m_TargetAssemblyTypeName: TeamJoinHandler, Assembly-CSharp
+        m_MethodName: SecondTeam
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1724510194
 MonoBehaviour:
   m_ObjectHideFlags: 0
