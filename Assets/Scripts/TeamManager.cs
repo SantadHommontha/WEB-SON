@@ -1,36 +1,50 @@
 using UnityEngine;
 using Photon.Pun;
+using TMPro;
 public class TeamManager : MonoBehaviourPunCallbacks
 {
     public static TeamManager instance;
     [SerializeField] private int maxTeamCount = 3;
+    [SerializeField] private TMP_Text report;
     private Team team = new Team();
 
     void Awake()
     {
-        if(instance != null && instance != this)
+        if (instance != null && instance != this)
             Destroy(this.gameObject);
         else
             instance = this;
     }
-    private void TryJoinTeam(string _teamName)
+
+    public void JoinTeam(PlayerData _playerData)
     {
+        string josnData = JsonUtility.ToJson(_playerData);
 
-
-        // if (_team)
-
-
-
-        //     if (PhotonNetwork.IsMasterClient)
-        //     {
-        //         // เป็น MasterClient
-        //     }
-
-
-
+        photonView.RPC("TryJoinTeam", RpcTarget.MasterClient, josnData);
     }
 
+    [PunRPC]
+    private void TryJoinTeam(string _playerData)
+    {
+        Debug.Log(_playerData);
+        PlayerData playerData = JsonUtility.FromJson<PlayerData>(_playerData);
 
+        if (team.TryToAddPlayer(playerData))
+        {
+            report.text = "Add Team Complete";
+           
+        }
+        else
+        {
+            report.text = "Add Team Fail";
+           
+        }
+    }
+    [ContextMenu("LogShow")]
+    private void Log()
+    {
+        team.LogShow();
+    }
 
 
 

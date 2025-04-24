@@ -3,7 +3,7 @@ using Photon.Pun;
 using System.Collections.Generic;
 using System;
 
-
+[System.Serializable]
 public class PlayerData
 {
     public PhotonMessageInfo info;
@@ -25,7 +25,7 @@ public class Team
     // ลองเพิ่มข้อมูลลงใน playerdata ถ้าเพื่มสำเร็จจะ return ค่า True ถ้าเพื่มไม่ได้จะ return false
     public bool TryToAddPlayer(PlayerData _data)
     {
-        if (playerdata.ContainsKey(_data.playerID))
+        if (!playerdata.ContainsKey(_data.playerID))
         {
             AddPlayer(_data);
             return true;
@@ -40,7 +40,7 @@ public class Team
     {
         if (!playerdata.ContainsKey(_data.playerID))
         {
-
+            Debug.Log($"Add {_data.playerName} To {_data.teamName} Team");
             playerdata.Add(_data.playerID, _data);
             OnPlayerTeamChange?.Invoke();
         }
@@ -50,7 +50,8 @@ public class Team
     {
         if (playerdata.ContainsKey(_playerID))
         {
-            Debug.Log("Remove Player Complete");
+            var p = playerdata[_playerID];
+            Debug.Log($"Remove {p.playerName} Form {p.teamName} Team");
             playerdata.Remove(_playerID);
             OnPlayerTeamChange?.Invoke();
         }
@@ -61,7 +62,7 @@ public class Team
         playerdata.Clear();
         OnPlayerTeamChange?.Invoke();
     }
-     // นับจำนวนผู้เล่น
+    // นับจำนวนผู้เล่น
     public int PlayerCount(string _team)
     {
         int count = 0;
@@ -73,6 +74,14 @@ public class Team
             }
         }
         return count;
+    }
+
+    public void LogShow()
+    {
+        foreach (var player in playerdata)
+        {
+            Debug.Log($"Player : {player.Value.playerName}");
+        }
     }
     /* public void SetPlayerData(PlayerData[] _playerData)
      {
