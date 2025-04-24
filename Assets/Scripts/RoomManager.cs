@@ -17,8 +17,8 @@ public class RoomManager : MonoBehaviourPunCallbacks
     void Start()
     {
         PhotonNetwork.ConnectUsingSettings();
-        selectTeam_Canva.SetActive(false);
-        connectToServer_Canva.SetActive(true);
+   //     selectTeam_Canva.SetActive(false);
+       // connectToServer_Canva.SetActive(true);
     }
 
     public override void OnConnectedToMaster()
@@ -32,14 +32,15 @@ public class RoomManager : MonoBehaviourPunCallbacks
     {
         base.OnJoinedLobby();
         Debug.Log("Join a Lobby");
-        selectTeam_Canva.SetActive(true);
-        connectToServer_Canva.SetActive(false);
+        JoinRoom();
+    //    selectTeam_Canva.SetActive(true);
+     //   connectToServer_Canva.SetActive(false);
     }
 
     public override void OnJoinedRoom()
     {
         base.OnJoinedRoom();
-        Debug.Log("Join a Room");
+        Debug.Log("Join a RoomJoinRoom()");
     }
 
     public void JoinRoom()

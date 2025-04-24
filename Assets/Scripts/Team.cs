@@ -61,7 +61,19 @@ public class Team
         playerdata.Clear();
         OnPlayerTeamChange?.Invoke();
     }
-
+     // นับจำนวนผู้เล่น
+    public int PlayerCount(string _team)
+    {
+        int count = 0;
+        foreach (var player in playerdata)
+        {
+            if (player.Value.teamName == _team)
+            {
+                count++;
+            }
+        }
+        return count;
+    }
     /* public void SetPlayerData(PlayerData[] _playerData)
      {
          Dictionary<string, PlayerData> playerdatas = new Dictionary<string, PlayerData>();

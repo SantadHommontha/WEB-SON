@@ -2,10 +2,17 @@ using UnityEngine;
 using Photon.Pun;
 public class TeamManager : MonoBehaviourPunCallbacks
 {
+  
     [SerializeField] private int maxTeamCount = 3;
     private int redTeamCount;
     private int blueTeamCount;
     private Team team = new Team();
+
+
+
+
+
+
 
 
 
