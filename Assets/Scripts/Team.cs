@@ -102,7 +102,10 @@ public class Team
         }
         return p;
     }
-
+    public List<PlayerData> GetAllPlayer()
+    {
+        return playerdata.Values.ToList();
+    }
     public PlayerData GetPlayerByID(string _playerID)
     {
         if (playerdata.ContainsKey(_playerID))

@@ -24,6 +24,7 @@ public class PlayerNameUI : MonoBehaviour
     private void TeamChange()
     {
         ChangeName("");
+       
         List<PlayerData> p = new List<PlayerData>();
         if (teamName == TeamName.FirstTeam)
             p = TeamManager.instance.Team_Script.GetPlayerByTeam(TeamName.FirstTeam);

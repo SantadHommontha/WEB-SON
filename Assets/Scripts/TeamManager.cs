@@ -1,12 +1,15 @@
 using UnityEngine;
 using Photon.Pun;
 using TMPro;
-using Unity.VisualScripting;
+using System.Collections.Generic;
+using ExitGames.Client.Photon;
+
 public class TeamManager : MonoBehaviourPunCallbacks
 {
     public static TeamManager instance;
     [SerializeField] private int maxTeamCount = 3;
     [SerializeField] private TMP_Text report;
+    [SerializeField] private string code;
     private Team team = new Team();
 
     public Team Team_Script => team;
@@ -17,7 +20,10 @@ public class TeamManager : MonoBehaviourPunCallbacks
         else
             instance = this;
     }
-
+    void Start()
+    {
+        team.OnPlayerTeamChange += UpdateTeamToOther;
+    }
     public void JoinTeam(PlayerData _playerData)
     {
         string josnData = JsonUtility.ToJson(_playerData);
@@ -30,17 +36,24 @@ public class TeamManager : MonoBehaviourPunCallbacks
     {
         //    Debug.Log(_playerData);
         PlayerData playerData = JsonUtility.FromJson<PlayerData>(_playerData);
-
-        if (team.PlayerCount(playerData.teamName) < maxTeamCount && team.TryToAddPlayer(playerData))
+        if (playerData.code == code)
         {
-            report.text = "Add Team Complete";
+            if (team.PlayerCount(playerData.teamName) < maxTeamCount && team.TryToAddPlayer(playerData))
+            {
+                report.text = "Add Team Complete";
 
+            }
+            else
+            {
+                report.text = "Add Team Fail";
+
+            }
         }
         else
         {
-            report.text = "Add Team Fail";
-
+            report.text = "Code Not Correct";
         }
+
 
 
     }
@@ -54,55 +67,56 @@ public class TeamManager : MonoBehaviourPunCallbacks
     public void Kick(string _playerID)
     {
         team.RemovePlayer(_playerID);
-        
+
     }
 
-    // private void TryJoinTeam(string _jsonData, PhotonMessageInfo _info)
-    // {
-    //     if (!PhotonNetwork.IsMasterClient) return;
 
-    //     var data = JsonUtility.FromJson<PlayerData>(_jsonData);
-    //     data.info = _info;
 
-    //     if (data.teamName == ValueName.RED_TEAM)
-    //     {
+    private void UpdateTeamToOther()
+    {
+        if (!PhotonNetwork.IsMasterClient) return;
+        TeamsWrapper teamsWrapper = new TeamsWrapper(team.GetAllPlayer());
 
-    //         if (redTeamCount < maxTeamCount && team.TryToAddPlayer(data))
-    //         {
-    //             // add Complete
-    //             Debug.Log($"PLayer Join Add Team:{data.playerName} {data.playerID}");
-    //             redTeamCount++;
+        ExitGames.Client.Photon.Hashtable playerdata = new ExitGames.Client.Photon.Hashtable()
+    {
+        {RoomPropertiesName.TeamData,JsonUtility.ToJson(teamsWrapper)}
+    };
 
-    //         }
-    //         else
-    //         {
-    //             // fail to addFD
-
-    //         }
-    //     }
-    //     else if (data.teamName == ValueName.BLUE_TEAM)
-    //     {
-
-    //         if (blueTeamCount < maxTeamCount && team.TryToAddPlayer(data))
-    //         {
-    //             // add Complete
-    //             Debug.Log($"PLayer Join Minus Team:{data.playerName} {data.playerID}");
-    //             blueTeamCount++;
-
-    //         }
-    //         else
-    //         {
-    //             // fail to add
-
-    //         }
-    //     }
-    //     else
-    //     {
-    //         // fail not have this team name
-
-    //     }
+        PhotonNetwork.CurrentRoom.SetCustomProperties(playerdata);
+    }
 
 
 
-    // }
+    public override void OnRoomPropertiesUpdate(Hashtable propertiesThatChanged)
+    {
+
+        Debug.Log((string)propertiesThatChanged[RoomPropertiesName.TeamData]);
+        if (propertiesThatChanged.ContainsKey(RoomPropertiesName.TeamData))
+        {
+
+            TeamsWrapper teamsWrapper = JsonUtility.FromJson<TeamsWrapper>((string)propertiesThatChanged[RoomPropertiesName.TeamData]);
+
+            if (PhotonNetwork.IsMasterClient) return;
+            team.ClearAll();
+
+            foreach (var T in teamsWrapper.playerDatas)
+            {
+                team.AddPlayer(T);
+            }
+        }
+    }
+
+
+
+
+}
+
+[System.Serializable]
+public class TeamsWrapper
+{
+    public List<PlayerData> playerDatas;
+    public TeamsWrapper(List<PlayerData> _playerDatas)
+    {
+        this.playerDatas = _playerDatas;
+    }
 }

@@ -1705,6 +1705,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxTeamCount: 3
   report: {fileID: 775152062}
+  code: 1234
 --- !u!114 &809868515
 MonoBehaviour:
   m_ObjectHideFlags: 0
