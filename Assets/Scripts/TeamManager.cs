@@ -1,6 +1,7 @@
 using UnityEngine;
 using Photon.Pun;
 using TMPro;
+using Unity.VisualScripting;
 public class TeamManager : MonoBehaviourPunCallbacks
 {
     public static TeamManager instance;
@@ -26,19 +27,21 @@ public class TeamManager : MonoBehaviourPunCallbacks
     [PunRPC]
     private void TryJoinTeam(string _playerData)
     {
-        Debug.Log(_playerData);
+        //    Debug.Log(_playerData);
         PlayerData playerData = JsonUtility.FromJson<PlayerData>(_playerData);
 
-        if (team.TryToAddPlayer(playerData))
+        if (team.PlayerCount(playerData.teamName) < maxTeamCount && team.TryToAddPlayer(playerData))
         {
             report.text = "Add Team Complete";
-           
+
         }
         else
         {
             report.text = "Add Team Fail";
-           
+
         }
+
+
     }
     [ContextMenu("LogShow")]
     private void Log()
@@ -46,7 +49,11 @@ public class TeamManager : MonoBehaviourPunCallbacks
         team.LogShow();
     }
 
-
+    [ContextMenu("Kick")]
+    private void Kick()
+    {
+        // team.RemovePlayer(_playerID ID _);
+    }
 
     // private void TryJoinTeam(string _jsonData, PhotonMessageInfo _info)
     // {

@@ -56,6 +56,20 @@ public class Team
             OnPlayerTeamChange?.Invoke();
         }
     }
+    public void RemovePlayer(string _teamName, int _playerIndex)
+    {
+        List<PlayerData> p = new List<PlayerData>();
+
+        foreach (var T in playerdata)
+        {
+            if (T.Value.teamName == _teamName)
+                p.Add(T.Value);
+        }
+
+       
+        RemovePlayer(p[_playerIndex].playerID);
+
+    }
     // ล้างข้อมูลทั้งหมดใน PlayerData
     public void ClearAll()
     {

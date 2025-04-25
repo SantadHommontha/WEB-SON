@@ -1,5 +1,6 @@
 using Photon.Pun;
 using TMPro;
+
 using UnityEngine;
 
 
@@ -19,7 +20,7 @@ public class TeamJoinHandler : MonoBehaviour
     {
         JoinTeam(TeamName.SecondTeam);
     }
-
+    int num = 0;
     private void JoinTeam(string _teamName)
     {
         PlayerData playerData = new PlayerData();
@@ -27,8 +28,9 @@ public class TeamJoinHandler : MonoBehaviour
         playerData.playerName = nameInput.text;
         playerData.code = codeInput.text;
         playerData.teamName = _teamName;
-        playerData.playerID = PhotonNetwork.LocalPlayer.UserId;
-
+        // playerData.playerID = PhotonNetwork.LocalPlayer.UserId;
+        playerData.playerID = num.ToString();
+        num++;
         TeamManager.instance.JoinTeam(playerData);
     }
 }
