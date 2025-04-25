@@ -9,6 +9,7 @@ public class TeamManager : MonoBehaviourPunCallbacks
     [SerializeField] private TMP_Text report;
     private Team team = new Team();
 
+    public Team Team_Script => team;
     void Awake()
     {
         if (instance != null && instance != this)
@@ -50,9 +51,10 @@ public class TeamManager : MonoBehaviourPunCallbacks
     }
 
     [ContextMenu("Kick")]
-    private void Kick()
+    public void Kick(string _playerID)
     {
-        // team.RemovePlayer(_playerID ID _);
+        team.RemovePlayer(_playerID);
+        
     }
 
     // private void TryJoinTeam(string _jsonData, PhotonMessageInfo _info)

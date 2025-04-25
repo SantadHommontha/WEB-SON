@@ -30,7 +30,7 @@ public class RoomManager : MonoBehaviourPunCallbacks
     {
         base.OnJoinedLobby();
         Debug.Log("Join a Lobby");
-         PhotonNetwork.JoinOrCreateRoom("GameRoom", null, null);
+        PhotonNetwork.JoinOrCreateRoom("GameRoom", null, null);
     }
 
     public override void OnJoinedRoom()
@@ -39,6 +39,16 @@ public class RoomManager : MonoBehaviourPunCallbacks
         Debug.Log("Join a RoomJoinRoom()");
     }
 
- 
+    public void DisconnectPlayer(PhotonMessageInfo _target)
+    {
+
+
+    }
+
+    [PunRPC]
+    private void Disconnect()
+    {
+        PhotonNetwork.LeaveRoom();
+    }
 
 }

@@ -2,6 +2,7 @@ using UnityEngine;
 using Photon.Pun;
 using System.Collections.Generic;
 using System;
+using System.Linq;
 
 [System.Serializable]
 public class PlayerData
@@ -66,7 +67,7 @@ public class Team
                 p.Add(T.Value);
         }
 
-       
+
         RemovePlayer(p[_playerIndex].playerID);
 
     }
@@ -90,6 +91,26 @@ public class Team
         return count;
     }
 
+
+    public List<PlayerData> GetPlayerByTeam(string _teamName)
+    {
+        List<PlayerData> p = new List<PlayerData>();
+        foreach (var T in playerdata)
+        {
+            if (T.Value.teamName == _teamName)
+                p.Add(T.Value);
+        }
+        return p;
+    }
+
+    public PlayerData GetPlayerByID(string _playerID)
+    {
+        if (playerdata.ContainsKey(_playerID))
+        {
+            return playerdata[_playerID];
+        }
+        return null;
+    }
     public void LogShow()
     {
         foreach (var player in playerdata)
