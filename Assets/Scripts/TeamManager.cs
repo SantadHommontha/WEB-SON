@@ -41,10 +41,12 @@ public class TeamManager : MonoBehaviourPunCallbacks
             if (team.PlayerCount(playerData.teamName) < maxTeamCount && team.TryToAddPlayer(playerData))
             {
                 report.text = "Add Team Complete";
+
             }
             else
             {
                 report.text = "Add Team Fail";
+
             }
         }
         else
@@ -68,6 +70,8 @@ public class TeamManager : MonoBehaviourPunCallbacks
 
     }
 
+
+
     private void UpdateTeamToOther()
     {
         if (!PhotonNetwork.IsMasterClient) return;
@@ -80,6 +84,8 @@ public class TeamManager : MonoBehaviourPunCallbacks
 
         PhotonNetwork.CurrentRoom.SetCustomProperties(playerdata);
     }
+
+
 
     public override void OnRoomPropertiesUpdate(Hashtable propertiesThatChanged)
     {
@@ -99,6 +105,9 @@ public class TeamManager : MonoBehaviourPunCallbacks
             }
         }
     }
+
+
+
 
 }
 
