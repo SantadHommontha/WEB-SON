@@ -4,6 +4,13 @@ using TMPro;
 using System.Collections.Generic;
 using ExitGames.Client.Photon;
 
+
+
+public class JoinTeamResult
+{
+    public bool complete;
+    public string report;
+}
 public class TeamManager : MonoBehaviourPunCallbacks
 {
     public static TeamManager instance;
@@ -12,6 +19,12 @@ public class TeamManager : MonoBehaviourPunCallbacks
     [SerializeField] private string code;
     private Team team = new Team();
 
+
+    [SerializeField] private GameObject chooseTeam_canvas;
+    [SerializeField] private GameObject play_canvas;
+
+
+    
     public Team Team_Script => team;
     void Awake()
     {
@@ -23,6 +36,8 @@ public class TeamManager : MonoBehaviourPunCallbacks
     void Start()
     {
         team.OnPlayerTeamChange += UpdateTeamToOther;
+
+
     }
     public void JoinTeam(PlayerData _playerData)
     {
@@ -36,27 +51,54 @@ public class TeamManager : MonoBehaviourPunCallbacks
     {
         //    Debug.Log(_playerData);
         PlayerData playerData = JsonUtility.FromJson<PlayerData>(_playerData);
+        JoinTeamResult joinTeamResult = new JoinTeamResult();
         if (playerData.code == code)
         {
             if (team.PlayerCount(playerData.teamName) < maxTeamCount && team.TryToAddPlayer(playerData))
             {
-                report.text = "Add Team Complete";
-
+                //   report.text = "Add Team Complete";
+                joinTeamResult.complete = true;
+                joinTeamResult.report = "Add Team Complete";
             }
             else
             {
-                report.text = "Add Team Fail";
-
+                //   report.text = "Add Team Fail";
+                joinTeamResult.complete = false;
+                joinTeamResult.report = "Add Team Fail";
             }
         }
         else
         {
-            report.text = "Code Not Correct";
+            //  report.text = "Code Not Correct";
+            joinTeamResult.complete = false;
+            joinTeamResult.report = "Code Not Correct";
         }
 
-
+        var jsonData = JsonUtility.ToJson(joinTeamResult);
+        photonView.RPC("JoinTeamResult", RpcTarget.All, jsonData);
 
     }
+    [PunRPC]
+    private void JoinTeamResult(string _result)
+    {
+
+        JoinTeamResult joinTeamResult = JsonUtility.FromJson<JoinTeamResult>(_result);
+
+        if (joinTeamResult.complete)
+        {
+            report.text = joinTeamResult.report;
+            play_canvas.SetActive(true);
+            chooseTeam_canvas.SetActive(false);
+        }
+        else
+        {
+            report.text = joinTeamResult.report;
+        }
+
+    }
+
+
+
     [ContextMenu("LogShow")]
     private void Log()
     {
@@ -86,15 +128,17 @@ public class TeamManager : MonoBehaviourPunCallbacks
     }
 
 
-
-    public override void OnRoomPropertiesUpdate(Hashtable propertiesThatChanged)
+    public override void OnJoinedRoom()
     {
-
-        Debug.Log((string)propertiesThatChanged[RoomPropertiesName.TeamData]);
-        if (propertiesThatChanged.ContainsKey(RoomPropertiesName.TeamData))
+        base.OnJoinedRoom();
+        CheckRoomProperties();
+    }
+    private void CheckRoomProperties()
+    {
+        if (PhotonNetwork.CurrentRoom.CustomProperties.ContainsKey(RoomPropertiesName.TeamData))
         {
 
-            TeamsWrapper teamsWrapper = JsonUtility.FromJson<TeamsWrapper>((string)propertiesThatChanged[RoomPropertiesName.TeamData]);
+            TeamsWrapper teamsWrapper = JsonUtility.FromJson<TeamsWrapper>((string)PhotonNetwork.CurrentRoom.CustomProperties[RoomPropertiesName.TeamData]);
 
             if (PhotonNetwork.IsMasterClient) return;
             team.ClearAll();
@@ -104,6 +148,13 @@ public class TeamManager : MonoBehaviourPunCallbacks
                 team.AddPlayer(T);
             }
         }
+    }
+
+    public override void OnRoomPropertiesUpdate(Hashtable propertiesThatChanged)
+    {
+
+        //  Debug.Log((string)propertiesThatChanged[RoomPropertiesName.TeamData]);
+        CheckRoomProperties();
     }
 
 

@@ -16,18 +16,11 @@ public class Timer : MonoBehaviour
     {
         startTimer.OnValueChange += StartChange;
     }
-  
+
     protected void StartChange(bool _b)
     {
-        Debug.Log($"{gameObject.name} : {_b}");
-        if (_b)
-        {
-            StartTimer();
-        }
-        else
-        {
-            StopTime();
-        }
+        if (_b) StartTimer();
+        else StopTime();
     }
 
     [ContextMenu("Start Timer")]

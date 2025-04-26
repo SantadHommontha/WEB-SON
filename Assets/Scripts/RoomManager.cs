@@ -7,6 +7,10 @@ public class RoomManager : MonoBehaviourPunCallbacks
 
     public GameObject connectToServer_Canva;
     public GameObject selectTeam_Canva;
+
+
+    [SerializeField] private GameObject chooseTeam_canvas;
+    [SerializeField] private GameObject play_canvas;
     void Awake()
     {
         if (Instance != null && Instance != this)
@@ -16,6 +20,9 @@ public class RoomManager : MonoBehaviourPunCallbacks
     }
     void Start()
     {
+
+        play_canvas.SetActive(false);
+        chooseTeam_canvas.SetActive(true);
         PhotonNetwork.ConnectUsingSettings();
     }
 

@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: TeamName
   m_EditorClassIdentifier: 
   description: Our Team
-  value: 
+  value: Red
   initialValue: 

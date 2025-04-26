@@ -43,6 +43,10 @@ MonoBehaviour:
   - Disconnect
   - ReciveClickCount
   - SendClickCount
+  - ReciveScore
+  - ReciveTime
+  - GameStart
+  - JoinTeamResult
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1

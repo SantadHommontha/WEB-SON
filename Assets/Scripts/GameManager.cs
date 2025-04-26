@@ -1,8 +1,10 @@
 
 using System;
+using ExitGames.Client.Photon;
 using NUnit.Framework;
 using Photon.Pun;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
 
 
@@ -27,17 +29,41 @@ public class GameManager : MonoBehaviourPun
     void Start()
     {
         timer.OnValueChange += TimeChange;
+
         fetchtimer.OnValueChange += CheckFetchTime;
+        SetUp();
+    }
+
+
+
+    private void SetUp()
+    {
+        startTimer.Value = false;
+        startFetchTimer.Value = false;
+        score.Value = 0;
+        timer.Value = 0;
     }
 
     [ContextMenu("Start Game")]
-    private void StartGame()
+
+    public void StartGame()
     {
+
+        if (!PhotonNetwork.IsMasterClient) return;
+
+        SetUp();
         startTimer.Value = true;
         startFetchTimer.Value = true;
+
+        photonView.RPC("GameStart", RpcTarget.Others);
+
     }
 
-
+    [PunRPC]
+    private void GameStart()
+    {
+        SetUp();
+    }
     protected void TimeChange(float _time)
     {
         if (_time <= 0)
@@ -46,6 +72,8 @@ public class GameManager : MonoBehaviourPun
             startFetchTimer.Value = false;
             UpdateGameScore();
         }
+
+        photonView.RPC("ReciveTime", RpcTarget.Others, timer.Value);
     }
     private void CheckFetchTime(float _b)
     {
@@ -58,6 +86,9 @@ public class GameManager : MonoBehaviourPun
                 startFetchTimer.Value = true;
         }
     }
+
+
+
 
 
     [ContextMenu("UpdateGameScore")]
@@ -100,5 +131,20 @@ public class GameManager : MonoBehaviourPun
             score.Value -= playerScoreData.clickCount;
         }
 
+        photonView.RPC("ReciveScore", RpcTarget.Others, score.Value);
+
+    }
+
+    [PunRPC]
+    private void ReciveTime(float _time)
+    {
+        if (PhotonNetwork.IsMasterClient) return;
+        timer.Value = _time;
+    }
+    [PunRPC]
+    private void ReciveScore(int _score)
+    {
+        if (PhotonNetwork.IsMasterClient) return;
+        score.Value = _score;
     }
 }
