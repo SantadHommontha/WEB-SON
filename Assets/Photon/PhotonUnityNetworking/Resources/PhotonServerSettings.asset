@@ -41,6 +41,8 @@ MonoBehaviour:
   - RespawnSpaceship
   - TryJoinTeam
   - Disconnect
+  - ReciveClickCount
+  - SendClickCount
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1

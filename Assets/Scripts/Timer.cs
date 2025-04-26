@@ -1,28 +1,58 @@
 using UnityEngine;
 using System.Collections;
+
 public class Timer : MonoBehaviour
 {
 #if UNITY_EDITOR //เอาไว้ว่านับเวลาของอะไร
     [SerializeField][TextArea] private string description;
 #endif
-    [SerializeField] private FloatValue time;
-    [SerializeField] private float countdownTime = 10f;
+    [SerializeField] protected FloatValue timer;
+    [SerializeField] protected BoolValue startTimer;
+
+    [SerializeField] protected float time = 10f;
+    protected Coroutine timerCoroutine;
+
+    void Start()
+    {
+        startTimer.OnValueChange += StartChange;
+    }
   
+    protected void StartChange(bool _b)
+    {
+        Debug.Log($"{gameObject.name} : {_b}");
+        if (_b)
+        {
+            StartTimer();
+        }
+        else
+        {
+            StopTime();
+        }
+    }
+
     [ContextMenu("Start Timer")]
     public void StartTimer()
     {
-        StartCoroutine(StartCountdown(countdownTime));
+        if (timerCoroutine != null) StopCoroutine(timerCoroutine);
+        timerCoroutine = StartCoroutine(Countdown(time));
     }
 
-    private IEnumerator StartCountdown(float _countdownTime)
+    public void StopTime()
     {
-        time.Value = _countdownTime;
+        if (timerCoroutine != null) StopCoroutine(timerCoroutine);
+    }
 
-        while (time.Value > 0)
+    protected virtual IEnumerator Countdown(float _countdownTime)
+    {
+        timer.Value = _countdownTime;
+
+        while (timer.Value > 0)
         {
             yield return new WaitForSeconds(1f);
-            time.Value--;
+            timer.Value--;
         }
-        Debug.Log("Time UP!");
+        timerCoroutine = null;
+
+        Debug.Log("timer UP!");
     }
 }
