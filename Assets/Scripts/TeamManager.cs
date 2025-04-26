@@ -23,7 +23,9 @@ public class TeamManager : MonoBehaviourPunCallbacks
     [SerializeField] private GameObject chooseTeam_canvas;
     [SerializeField] private GameObject play_canvas;
 
+    [SerializeField] private GameObject end_canvas;
 
+    [SerializeField] private BoolValue enterGame;
 
     public Team Team_Script => team;
     void Awake()
@@ -90,6 +92,8 @@ public class TeamManager : MonoBehaviourPunCallbacks
             report.text = joinTeamResult.report;
             play_canvas.SetActive(true);
             chooseTeam_canvas.SetActive(false);
+
+            enterGame.Value = true;
         }
         else
         {
@@ -110,9 +114,17 @@ public class TeamManager : MonoBehaviourPunCallbacks
     public void Kick(string _playerID)
     {
         team.RemovePlayer(_playerID);
-
+        photonView.RPC("Leave", team.GetPlayerByID(_playerID).info.Sender);
     }
 
+    [PunRPC]
+    private void Leave(string _playerID)
+    {
+        chooseTeam_canvas.SetActive(true);
+        play_canvas.SetActive(false);
+        end_canvas.SetActive(false);
+
+    }
 
 
     private void UpdateTeamToOther()

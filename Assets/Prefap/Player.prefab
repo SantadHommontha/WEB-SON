@@ -145,6 +145,7 @@ GameObject:
   - component: {fileID: 6589172131799012860}
   - component: {fileID: 61642702297490747}
   - component: {fileID: 569952861065402812}
+  - component: {fileID: 8320721265507634708}
   m_Layer: 5
   m_Name: Player
   m_TagString: Untagged
@@ -161,7 +162,7 @@ RectTransform:
   m_GameObject: {fileID: 4616151857971129020}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.48115495, y: 0.16524716, z: 0.57435095}
+  m_LocalScale: {x: 0.48115495, y: 0.11299724, z: 0.57435095}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6414020758749007299}
@@ -226,6 +227,19 @@ MonoBehaviour:
   playerName: {fileID: 1771567756569596153}
   nameIndex: 0
   teamName: Red
+--- !u!114 &8320721265507634708
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4616151857971129020}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9751aa46afead04cb5f77f1acec2b53, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isConnectToRoom: {fileID: 11400000, guid: 4716dae4442303d44b2590e060d24d9d, type: 2}
 --- !u!1 &6757455405635556562
 GameObject:
   m_ObjectHideFlags: 0
@@ -396,7 +410,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.000061035156, y: 0.66}
+  m_AnchoredPosition: {x: 0, y: 0.66}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8225444572187336172

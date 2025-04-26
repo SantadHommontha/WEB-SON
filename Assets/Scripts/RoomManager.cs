@@ -12,6 +12,7 @@ public class RoomManager : MonoBehaviourPunCallbacks
     [SerializeField] private GameObject chooseTeam_canvas;
     [SerializeField] private GameObject play_canvas;
     [SerializeField] private GameObject gameEnd_canvas;
+    [SerializeField] private BoolValue isConnectToRoom;
     void Awake()
     {
         if (Instance != null && Instance != this)
@@ -21,6 +22,7 @@ public class RoomManager : MonoBehaviourPunCallbacks
     }
     void Start()
     {
+        isConnectToRoom.Value = false;
         connect_canvas.SetActive(true);
         play_canvas.SetActive(false);
         chooseTeam_canvas.SetActive(false);
@@ -48,6 +50,7 @@ public class RoomManager : MonoBehaviourPunCallbacks
     public override void OnJoinedRoom()
     {
         base.OnJoinedRoom();
+         isConnectToRoom.Value = true;
         Debug.Log("Join a RoomJoinRoom()");
         loadBar.fillAmount = 1;
         StartCoroutine(COuntDownToChoostTeam());

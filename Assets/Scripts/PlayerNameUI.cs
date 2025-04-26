@@ -21,10 +21,14 @@ public class PlayerNameUI : MonoBehaviour
     {
         TeamManager.instance.Team_Script.OnPlayerTeamChange -= TeamChange;
     }
+    void OnEnable()
+    {
+        TeamChange();
+    }
     private void TeamChange()
     {
         ChangeName("");
-       
+        Debug.Log("PlayerNameUI");
         List<PlayerData> p = new List<PlayerData>();
         if (teamName == TeamName.FirstTeam)
             p = TeamManager.instance.Team_Script.GetPlayerByTeam(TeamName.FirstTeam);

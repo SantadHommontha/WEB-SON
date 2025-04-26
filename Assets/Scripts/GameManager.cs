@@ -1,5 +1,6 @@
 
 using System;
+using System.Collections;
 using ExitGames.Client.Photon;
 using NUnit.Framework;
 using Photon.Pun;
@@ -31,11 +32,14 @@ public class GameManager : MonoBehaviourPun
     [SerializeField] private IntValue redTeamScore;
     [SerializeField] private IntValue blueTeamScore;
 
+    [SerializeField] private BoolValue enterGame;
 
     [SerializeField] private GameObject play_canvas;
     [SerializeField] private GameObject end_canvas;
+  //  [SerializeField] private GameObject chooseTetam_canvas;
     [SerializeField] private GameObject red_ui;
     [SerializeField] private GameObject blue_ui;
+    [SerializeField] private GameObject leave;
 
 
     private bool gamestart = false;
@@ -56,6 +60,7 @@ public class GameManager : MonoBehaviourPun
         startFetchTimer.Value = false;
         score.Value = 0;
         timer.Value = 0;
+        clickCount.SetValue(0);
     }
 
     [ContextMenu("Start Game")]
@@ -76,6 +81,7 @@ public class GameManager : MonoBehaviourPun
     [PunRPC]
     private void GameStart()
     {
+        if (!enterGame.Value) return;
         SetUp();
     }
     protected void TimeChange(float _time)
@@ -120,6 +126,7 @@ public class GameManager : MonoBehaviourPun
     [PunRPC]
     private void SendClickCount()
     {
+        if (!enterGame.Value) return;
         PlayerScoreData playerScoreData = new()
         {
             playerName = myName.Value,
@@ -134,6 +141,7 @@ public class GameManager : MonoBehaviourPun
     [PunRPC]
     private void ReciveClickCount(string _playerScoreData)
     {
+        if (!enterGame.Value) return;
         if (!PhotonNetwork.IsMasterClient) return;
 
         PlayerScoreData playerScoreData = JsonUtility.FromJson<PlayerScoreData>(_playerScoreData);
@@ -154,6 +162,22 @@ public class GameManager : MonoBehaviourPun
 
     }
 
+    public void Restart()
+    {
+        if (PhotonNetwork.IsMasterClient)
+        {
+            play_canvas.SetActive(true);
+            end_canvas.SetActive(false);
+            SetUp();
+        }
+        else
+        {
+
+            TeamManager.instance.Kick(PhotonNetwork.LocalPlayer.UserId);
+      
+          
+        }
+    }
 
 
 
@@ -172,13 +196,23 @@ public class GameManager : MonoBehaviourPun
             red_ui.SetActive(false);
             blue_ui.SetActive(true);
         }
+
+        StartCoroutine(ShowLeaveBtn());
         if (PhotonNetwork.IsMasterClient)
             photonView.RPC("ReciveGameEnd", RpcTarget.Others);
     }
 
+    private IEnumerator ShowLeaveBtn()
+    {
+
+        leave.SetActive(false);
+        yield return new WaitForSeconds(1.5f);
+        leave.SetActive(true);
+    }
     [PunRPC]
     private void ReciveGameEnd()
     {
+        if (!enterGame.Value) return;
         GameEnd();
     }
 
@@ -187,12 +221,14 @@ public class GameManager : MonoBehaviourPun
     [PunRPC]
     private void ReciveTime(float _time)
     {
+        if (!enterGame.Value) return;
         if (PhotonNetwork.IsMasterClient) return;
         timer.Value = _time;
     }
     [PunRPC]
     private void ReciveScore(int _score)
     {
+        if (!enterGame.Value) return;
         if (PhotonNetwork.IsMasterClient) return;
         score.Value = _score;
     }
