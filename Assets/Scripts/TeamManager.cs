@@ -24,7 +24,7 @@ public class TeamManager : MonoBehaviourPunCallbacks
     [SerializeField] private GameObject play_canvas;
 
 
-    
+
     public Team Team_Script => team;
     void Awake()
     {
@@ -47,10 +47,11 @@ public class TeamManager : MonoBehaviourPunCallbacks
     }
 
     [PunRPC]
-    private void TryJoinTeam(string _playerData)
+    private void TryJoinTeam(string _playerData, PhotonMessageInfo _info)
     {
         //    Debug.Log(_playerData);
         PlayerData playerData = JsonUtility.FromJson<PlayerData>(_playerData);
+        playerData.info = _info;
         JoinTeamResult joinTeamResult = new JoinTeamResult();
         if (playerData.code == code)
         {
@@ -75,7 +76,7 @@ public class TeamManager : MonoBehaviourPunCallbacks
         }
 
         var jsonData = JsonUtility.ToJson(joinTeamResult);
-        photonView.RPC("JoinTeamResult", RpcTarget.All, jsonData);
+        photonView.RPC("JoinTeamResult", _info.Sender, jsonData);
 
     }
     [PunRPC]

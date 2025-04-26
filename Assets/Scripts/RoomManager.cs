@@ -11,6 +11,7 @@ public class RoomManager : MonoBehaviourPunCallbacks
 
     [SerializeField] private GameObject chooseTeam_canvas;
     [SerializeField] private GameObject play_canvas;
+     [SerializeField] private GameObject gameEnd_canvas;
     void Awake()
     {
         if (Instance != null && Instance != this)
@@ -23,6 +24,7 @@ public class RoomManager : MonoBehaviourPunCallbacks
 
         play_canvas.SetActive(false);
         chooseTeam_canvas.SetActive(true);
+        gameEnd_canvas.SetActive(false);
         PhotonNetwork.ConnectUsingSettings();
     }
 
