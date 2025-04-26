@@ -2,29 +2,27 @@ using UnityEngine;
 using System.Collections;
 public class Timer : MonoBehaviour
 {
-    [SerializeField] private FloatValue timer;
-    [SerializeField] private float countdownTime = 10f; 
-    private float currentTime;
-
-
+#if UNITY_EDITOR //เอาไว้ว่านับเวลาของอะไร
+    [SerializeField][TextArea] private string description;
+#endif
+    [SerializeField] private FloatValue time;
+    [SerializeField] private float countdownTime = 10f;
+  
+    [ContextMenu("Start Timer")]
     public void StartTimer()
     {
-        StartCoroutine(StartCountdown());
+        StartCoroutine(StartCountdown(countdownTime));
     }
 
-    private IEnumerator StartCountdown()
+    private IEnumerator StartCountdown(float _countdownTime)
     {
-        currentTime = countdownTime;
+        time.Value = _countdownTime;
 
-        while (currentTime > 0)
+        while (time.Value > 0)
         {
-
             yield return new WaitForSeconds(1f);
-            currentTime--;
+            time.Value--;
         }
-
         Debug.Log("Time UP!");
-      
     }
-
 }

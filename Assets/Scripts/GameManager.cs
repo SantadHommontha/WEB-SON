@@ -1,20 +1,38 @@
+
+using Photon.Pun;
 using UnityEngine;
 
-public class GameManager : MonoBehaviour
+
+
+public class PlayerScoreData
+{
+    public string playerName;
+    public string teamName;
+    public int clickCount;
+}
+
+public class GameManager : MonoBehaviourPun
 {
     [SerializeField] private IntValue score;
-    void Start()
+
+
+    private void UpdateGameScore()
     {
-        
+        if (!PhotonNetwork.IsMasterClient) return;
+
+        photonView.RPC("SendClickCount", RpcTarget.Others);
     }
 
-    // Update is called once per frame
-    void Update()
+
+    [PunRPC]
+    private void SendClickCount()
     {
-        
+           photonView.RPC("ReciveClickCount", RpcTarget.MasterClient);
     }
-    void OnEnable()
+
+    [PunRPC]
+    private void ReciveClickCount(string _playerScoreData)
     {
-        
+        if (!PhotonNetwork.IsMasterClient) return;
     }
 }

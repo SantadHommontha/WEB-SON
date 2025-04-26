@@ -9,7 +9,7 @@ public class TeamJoinHandler : MonoBehaviour
     [SerializeField] private TMP_InputField nameInput;
     [SerializeField] private TMP_InputField codeInput;
 
-
+    [SerializeField] private StringValue myName;
     // เรียกใช้โดยตัว UI Buttom
     public void FirstTeam()
     {
@@ -20,7 +20,7 @@ public class TeamJoinHandler : MonoBehaviour
     {
         JoinTeam(TeamName.SecondTeam);
     }
-    int num = 0;
+   
     private void JoinTeam(string _teamName)
     {
         PlayerData playerData = new PlayerData();
@@ -29,7 +29,7 @@ public class TeamJoinHandler : MonoBehaviour
         playerData.code = codeInput.text;
         playerData.teamName = _teamName;
         playerData.playerID = PhotonNetwork.LocalPlayer.UserId;
-      
+        myName.Value = nameInput.text;
         TeamManager.instance.JoinTeam(playerData);
     }
 }
