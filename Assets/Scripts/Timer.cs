@@ -10,6 +10,17 @@ public class Timer : MonoBehaviour
     [SerializeField] protected BoolValue startTimer;
 
     [SerializeField] protected float time = 10f;
+    [SerializeField] protected FloatValue gameTime;
+    private float Time
+    {
+        get
+        {
+            if (gameTime)
+                return gameTime.Value;
+            else
+                return time;
+        }
+    }
     protected Coroutine timerCoroutine;
 
     void Start()
@@ -27,7 +38,7 @@ public class Timer : MonoBehaviour
     public void StartTimer()
     {
         if (timerCoroutine != null) StopCoroutine(timerCoroutine);
-        timerCoroutine = StartCoroutine(Countdown(time));
+        timerCoroutine = StartCoroutine(Countdown(Time));
     }
 
     public void StopTime()

@@ -8,7 +8,7 @@ public class FetchTimer : Timer
         timer.Value = 1;
         yield return new WaitForSeconds(_countdownTime);
         timer.Value = 0;
-        Debug.Log("FFFF");
+     
         timerCoroutine = null;
     }
 }

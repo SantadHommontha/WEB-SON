@@ -2,6 +2,7 @@ using UnityEngine.UI;
 using Photon.Pun;
 using UnityEngine;
 using System.Collections;
+using Photon.Realtime;
 
 public class RoomManager : MonoBehaviourPunCallbacks
 {
@@ -50,7 +51,7 @@ public class RoomManager : MonoBehaviourPunCallbacks
     public override void OnJoinedRoom()
     {
         base.OnJoinedRoom();
-         isConnectToRoom.Value = true;
+        isConnectToRoom.Value = true;
         Debug.Log("Join a RoomJoinRoom()");
         loadBar.fillAmount = 1;
         StartCoroutine(COuntDownToChoostTeam());
@@ -75,6 +76,11 @@ public class RoomManager : MonoBehaviourPunCallbacks
     private void Disconnect()
     {
         PhotonNetwork.LeaveRoom();
+    }
+
+    public void ChangeMaster(Player _player)
+    {
+        PhotonNetwork.SetMasterClient(_player);
     }
 
 }

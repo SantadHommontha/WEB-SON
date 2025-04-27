@@ -23,6 +23,7 @@ public class GameManager : MonoBehaviourPun
     [SerializeField] private StringValue teamName;
     [SerializeField] private IntValue clickCount;
 
+    [SerializeField] private FloatValue gameTimer;
     [SerializeField] private FloatValue timer;
     [SerializeField] private FloatValue fetchtimer;
     [SerializeField] private BoolValue startTimer;
@@ -36,7 +37,7 @@ public class GameManager : MonoBehaviourPun
 
     [SerializeField] private GameObject play_canvas;
     [SerializeField] private GameObject end_canvas;
-  //  [SerializeField] private GameObject chooseTetam_canvas;
+    //  [SerializeField] private GameObject chooseTetam_canvas;
     [SerializeField] private GameObject red_ui;
     [SerializeField] private GameObject blue_ui;
     [SerializeField] private GameObject leave;
@@ -59,7 +60,7 @@ public class GameManager : MonoBehaviourPun
         startTimer.Value = false;
         startFetchTimer.Value = false;
         score.Value = 0;
-        timer.Value = 0;
+        timer.Value = gameTimer.Value;
         clickCount.SetValue(0);
     }
 
@@ -74,6 +75,7 @@ public class GameManager : MonoBehaviourPun
         startTimer.Value = true;
         startFetchTimer.Value = true;
         gamestart = true;
+        timer.Value = gameTimer.Value;
         photonView.RPC("GameStart", RpcTarget.Others);
 
     }
@@ -162,7 +164,7 @@ public class GameManager : MonoBehaviourPun
 
     }
 
-    public void Restart()
+    public void LeaveGame()
     {
         if (PhotonNetwork.IsMasterClient)
         {
@@ -174,12 +176,17 @@ public class GameManager : MonoBehaviourPun
         {
 
             TeamManager.instance.Kick(PhotonNetwork.LocalPlayer.UserId);
-      
-          
+
+
         }
     }
 
+    public void ResetGame()
+    {
+        SetUp();
+        photonView.RPC("ReciveReset", RpcTarget.Others);
 
+    }
 
     private void GameEnd()
     {
@@ -231,5 +238,14 @@ public class GameManager : MonoBehaviourPun
         if (!enterGame.Value) return;
         if (PhotonNetwork.IsMasterClient) return;
         score.Value = _score;
+    }
+
+    [PunRPC]
+    private void ReciveReset()
+    {
+        if (!enterGame.Value) return;
+        SetUp();
+        TeamManager.instance.Kick(PhotonNetwork.LocalPlayer.UserId);
+
     }
 }

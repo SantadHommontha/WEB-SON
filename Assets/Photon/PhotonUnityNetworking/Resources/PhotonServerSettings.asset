@@ -49,6 +49,9 @@ MonoBehaviour:
   - JoinTeamResult
   - ReciveGameEnd
   - Leave
+  - Kick_Master
+  - GoToChooseTeam
+  - ReciveReset
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1

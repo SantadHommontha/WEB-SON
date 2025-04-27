@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 7341903473215146676}
   - component: {fileID: 1265762580643106260}
   - component: {fileID: 2729042749376972878}
+  - component: {fileID: 1888265116577186560}
   m_Layer: 5
   m_Name: Button
   m_TagString: Untagged
@@ -133,6 +134,19 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &1888265116577186560
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1192884573574155}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9751aa46afead04cb5f77f1acec2b53, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isConnectToRoom: {fileID: 11400000, guid: 4716dae4442303d44b2590e060d24d9d, type: 2}
 --- !u!1 &4616151857971129020
 GameObject:
   m_ObjectHideFlags: 0
@@ -145,7 +159,6 @@ GameObject:
   - component: {fileID: 6589172131799012860}
   - component: {fileID: 61642702297490747}
   - component: {fileID: 569952861065402812}
-  - component: {fileID: 8320721265507634708}
   m_Layer: 5
   m_Name: Player
   m_TagString: Untagged
@@ -227,19 +240,6 @@ MonoBehaviour:
   playerName: {fileID: 1771567756569596153}
   nameIndex: 0
   teamName: Red
---- !u!114 &8320721265507634708
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4616151857971129020}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f9751aa46afead04cb5f77f1acec2b53, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isConnectToRoom: {fileID: 11400000, guid: 4716dae4442303d44b2590e060d24d9d, type: 2}
 --- !u!1 &6757455405635556562
 GameObject:
   m_ObjectHideFlags: 0
