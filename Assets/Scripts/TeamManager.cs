@@ -17,7 +17,7 @@ public class TeamManager : MonoBehaviourPunCallbacks
     public static TeamManager instance;
     [SerializeField] private int maxTeamCount = 3;
     [SerializeField] private TMP_Text report;
-    [SerializeField] private string code;
+    [SerializeField] private StringValue code;
     private Team team = new Team();
 
 
@@ -62,15 +62,27 @@ public class TeamManager : MonoBehaviourPunCallbacks
         playerData.info = _info;
         JoinTeamResult joinTeamResult = new JoinTeamResult();
 
-        if (playerData.code == "admin")
+        if (playerData.playerName == "admin")
         {
             LeaveAll();
             RoomManager.Instance.ChangeMaster(_info.Sender);
-            JoinTeam(playerData);
+            joinTeamResult.complete = true;
+            joinTeamResult.report = "Yor Are Admin";
+            var jsonData = JsonUtility.ToJson(joinTeamResult);
+
+            chooseTeam_canvas.SetActive(true);
+            play_canvas.SetActive(false);
+            end_canvas.SetActive(false);
+            control_canvas.SetActive(false);
+
+
+            photonView.RPC("JoinTeamResult", _info.Sender, jsonData);
+
+            //  JoinTeamResult(jsonData);
         }
         else
         {
-            if (playerData.code == code)
+            if (playerData.code == code.Value)
             {
                 if (team.PlayerCount(playerData.teamName) < maxTeamCount && team.TryToAddPlayer(playerData))
                 {

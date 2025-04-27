@@ -8,7 +8,7 @@ public class SetGameTimeBTN : MonoBehaviour
 
     void Start()
     {
-        gameTime.Value = 30f;
+        input.text =  gameTime.Value.ToString();
     }
     public void CharacterUpdate(string _input)
     {

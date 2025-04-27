@@ -37,10 +37,15 @@ public class GameManager : MonoBehaviourPun
 
     [SerializeField] private GameObject play_canvas;
     [SerializeField] private GameObject end_canvas;
-    //  [SerializeField] private GameObject chooseTetam_canvas;
+    [SerializeField] private GameObject gameControl_canvas;
+  
     [SerializeField] private GameObject red_ui;
     [SerializeField] private GameObject blue_ui;
     [SerializeField] private GameObject leave;
+
+
+
+    [SerializeField] private BoolValue setSpectatorMode;
 
 
     private bool gamestart = false;
@@ -76,6 +81,15 @@ public class GameManager : MonoBehaviourPun
         startFetchTimer.Value = true;
         gamestart = true;
         timer.Value = gameTimer.Value;
+        if (setSpectatorMode.Value)
+        {
+            red_ui.SetActive(false);
+            blue_ui.SetActive(false);
+            gameControl_canvas.SetActive(false);
+            play_canvas.SetActive(true);
+            end_canvas.SetActive(false);
+        }
+
         photonView.RPC("GameStart", RpcTarget.Others);
 
     }
@@ -84,6 +98,10 @@ public class GameManager : MonoBehaviourPun
     private void GameStart()
     {
         if (!enterGame.Value) return;
+        play_canvas.SetActive(true);
+        red_ui.SetActive(false);
+        blue_ui.SetActive(false);
+        end_canvas.SetActive(false);
         SetUp();
     }
     protected void TimeChange(float _time)
@@ -168,8 +186,18 @@ public class GameManager : MonoBehaviourPun
     {
         if (PhotonNetwork.IsMasterClient)
         {
-            play_canvas.SetActive(true);
-            end_canvas.SetActive(false);
+
+
+            // if (setSpectatorMode.Value)
+            // {
+
+            // }
+            // else
+            // {
+            //     play_canvas.SetActive(true);
+            //     end_canvas.SetActive(false);
+            // }
+            gameControl_canvas.SetActive(true);
             SetUp();
         }
         else
