@@ -14,6 +14,8 @@ public class SandAnimationController : MonoBehaviour
 
     [SerializeField] private List<PlaySpriteAnimation> playSpriteAnimations = new List<PlaySpriteAnimation>();
 
+    [SerializeField] PlaySpriteAnimation waterGun;
+    [SerializeField] private PlaySpriteAnimation bucget;
 
     private int lastScore = 0;
     void Start()
@@ -24,13 +26,28 @@ public class SandAnimationController : MonoBehaviour
 
     private void OnScoreUpdate(int _score)
     {
-        if (_score >= playSpriteAnimations.Count * 10)
+        Debug.Log(_score);
+        if (_score > playSpriteAnimations.Count * 10 && _score > 0)
         {
             Create();
+
         }
         else if (_score <= (playSpriteAnimations.Count - 1) * 10)
         {
             Delete();
+
+        }
+        if (_score < 0)
+        {
+            waterGun.PlayUp();
+        }
+        
+        if (_score <= 0 && playSpriteAnimations.Count > 0)
+        {
+            while (playSpriteAnimations.Count > 0)
+            {
+                Delete();
+            }
         }
     }
 
@@ -49,7 +66,7 @@ public class SandAnimationController : MonoBehaviour
     [ContextMenu("Create")]
     private void Create()
     {
-
+        bucget.PlayUp();
         Vector3 position = CalculatorPosition();
 
         var s = Instantiate(sandSetAB[UnityEngine.Random.Range(0, sandSetAB.Length)], position, Quaternion.identity, point);
@@ -65,6 +82,8 @@ public class SandAnimationController : MonoBehaviour
 
         s.playSpriteAnimation = h;
         s.PlayUp();
+
+
     }
 
 
@@ -73,6 +92,7 @@ public class SandAnimationController : MonoBehaviour
     private void Delete()
     {
         if (playSpriteAnimations.Count == 0) return;
+        waterGun.PlayUp();
         var last = playSpriteAnimations[playSpriteAnimations.Count - 1];
 
         last.OnanimationCompleted = last.Delete;

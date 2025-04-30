@@ -43,7 +43,8 @@ public class GameManager : MonoBehaviourPun
     [SerializeField] private GameObject blue_ui;
     [SerializeField] private GameObject leave;
 
-
+    [SerializeField] private PlaySpriteAnimation waterGun;
+    [SerializeField] private PlaySpriteAnimation bucket;
 
     [SerializeField] private BoolValue setSpectatorMode;
 
@@ -154,7 +155,8 @@ public class GameManager : MonoBehaviourPun
         string jsonData = JsonUtility.ToJson(playerScoreData);
         photonView.RPC("ReciveClickCount", RpcTarget.MasterClient, jsonData);
     }
-
+    int fCount = 0;
+    int sCount = 0;
     [PunRPC]
     private void ReciveClickCount(string _playerScoreData)
     {
@@ -168,11 +170,23 @@ public class GameManager : MonoBehaviourPun
         {
             score.Value += playerScoreData.clickCount;
             redTeamScore.Value += playerScoreData.clickCount;
+            fCount++;
+            if (fCount > 10)
+            {
+                fCount = 0;
+                bucket.PlayUp();
+            }
+
         }
         else if (playerScoreData.teamName == TeamName.SecondTeam)
         {
             score.Value -= playerScoreData.clickCount;
             blueTeamScore.Value += playerScoreData.clickCount;
+            if (sCount > 10)
+            {
+                sCount = 0;
+                waterGun.PlayUp();
+            }
         }
 
         photonView.RPC("ReciveScore", RpcTarget.Others, score.Value);
