@@ -7,4 +7,9 @@ public class SetSpectator : MonoBehaviour
     {
         setSpectator.Value = value;
     }
+
+    void Start()
+    {
+        OnValueChange(setSpectator.Value);
+    }
 }

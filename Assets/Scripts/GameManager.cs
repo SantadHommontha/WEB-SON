@@ -38,7 +38,7 @@ public class GameManager : MonoBehaviourPun
     [SerializeField] private GameObject play_canvas;
     [SerializeField] private GameObject end_canvas;
     [SerializeField] private GameObject gameControl_canvas;
-  
+
     [SerializeField] private GameObject red_ui;
     [SerializeField] private GameObject blue_ui;
     [SerializeField] private GameObject leave;
@@ -83,11 +83,8 @@ public class GameManager : MonoBehaviourPun
         timer.Value = gameTimer.Value;
         if (setSpectatorMode.Value)
         {
-            red_ui.SetActive(false);
-            blue_ui.SetActive(false);
-            gameControl_canvas.SetActive(false);
-            play_canvas.SetActive(true);
-            end_canvas.SetActive(false);
+            Spcetator();
+
         }
 
         photonView.RPC("GameStart", RpcTarget.Others);
@@ -172,7 +169,7 @@ public class GameManager : MonoBehaviourPun
             score.Value += playerScoreData.clickCount;
             redTeamScore.Value += playerScoreData.clickCount;
         }
-        else
+        else if (playerScoreData.teamName == TeamName.SecondTeam)
         {
             score.Value -= playerScoreData.clickCount;
             blueTeamScore.Value += playerScoreData.clickCount;
@@ -208,6 +205,17 @@ public class GameManager : MonoBehaviourPun
 
         }
     }
+
+    public void Spcetator()
+    {
+        setSpectatorMode.Value = true;
+        red_ui.SetActive(false);
+        blue_ui.SetActive(false);
+        gameControl_canvas.SetActive(false);
+        play_canvas.SetActive(true);
+        end_canvas.SetActive(false);
+    }
+
 
     public void ResetGame()
     {
