@@ -9,9 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 35d63393a5233ab448af97b7588407a6, type: 3}
-  m_Name: Score
+  m_Script: {fileID: 11500000, guid: 21731e14b2e2c5c488a700b13cba1e16, type: 3}
+  m_Name: LastSandPosition
   m_EditorClassIdentifier: 
-  description: Game Score
-  value: 9
-  initialValue: 0
+  description: 
+  value: {x: 0, y: 0, z: 0}
+  initialValue: {x: 0, y: 0, z: 0}
