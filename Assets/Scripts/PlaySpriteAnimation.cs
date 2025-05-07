@@ -52,6 +52,11 @@ public class PlaySpriteAnimation : MonoBehaviour
         }
         PlayAni();
     }
+    public void PlayUpUntil()
+    {
+        if (co_timeAnimation != null) return;
+        PlayUp();
+    }
     [ContextMenu("PlayDown")]
     public void PlayDown()
     {
@@ -70,7 +75,11 @@ public class PlaySpriteAnimation : MonoBehaviour
             PlayAni();
 
     }
-
+    public void PlayDownUntil()
+    {
+        if (co_timeAnimation != null) return;
+        PlayDown();
+    }
 
 
     public void Play()

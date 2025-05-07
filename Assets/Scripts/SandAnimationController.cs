@@ -39,7 +39,7 @@ public class SandAnimationController : MonoBehaviour
         }
         if (_score < 0)
         {
-            waterGun.PlayUp();
+            waterGun.PlayUpUntil();
         }
         
         if (_score <= 0 && playSpriteAnimations.Count > 0)

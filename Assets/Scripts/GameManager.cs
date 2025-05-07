@@ -48,7 +48,7 @@ public class GameManager : MonoBehaviourPun
 
     [SerializeField] private BoolValue setSpectatorMode;
 
-
+    [SerializeField] private GameObject touchArea;
     private bool gamestart = false;
     void Start()
     {
@@ -76,7 +76,7 @@ public class GameManager : MonoBehaviourPun
     {
 
         if (!PhotonNetwork.IsMasterClient) return;
-
+        touchArea.SetActive(false);
         SetUp();
         startTimer.Value = true;
         startFetchTimer.Value = true;
